@@ -32,7 +32,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding-bottom: 100px;
+  padding-bottom: 80px;
 }
 
 /* ── Header ── */
@@ -173,13 +173,6 @@ body {
   flex-shrink: 0;
 }
 
-.stars-filled {
-  color: var(--star);
-}
-
-.stars-empty {
-  color: var(--star-empty);
-}
 
 .card-meta {
   margin-top: 10px;
@@ -213,15 +206,33 @@ body {
   border-top: 1px solid var(--surface2);
 }
 
+.card-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-btn {
+  flex: 1;
+  background: var(--surface2);
+  border: none;
+  color: var(--text);
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
 .delete-btn {
+  flex: 1;
   background: transparent;
   border: 1px solid var(--danger);
   color: var(--danger);
-  padding: 8px 16px;
+  padding: 10px;
   border-radius: 8px;
   font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
-  width: 100%;
 }
 
 /* ── FAB ── */
@@ -364,29 +375,74 @@ body {
   line-height: 1.5;
 }
 
-/* ── Star rating ── */
-.star-rating {
+/* ── Rating input (slider) ── */
+.rating-input {
   display: flex;
-  gap: 4px;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.star {
-  background: none;
-  border: none;
+.rating-display {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+}
+
+.rating-score {
   font-size: 32px;
-  cursor: pointer;
-  color: var(--star-empty);
-  padding: 0 2px;
-  transition: color 0.1s, transform 0.1s;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.star.filled {
+  font-weight: 800;
   color: var(--star);
+  line-height: 1;
 }
 
-.star:active {
-  transform: scale(1.25);
+.rating-total {
+  font-size: 16px;
+  color: var(--text-muted);
+}
+
+.rating-none {
+  font-size: 16px;
+  color: var(--text-muted);
+}
+
+.rating-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--surface2);
+  outline: none;
+  cursor: pointer;
+}
+
+.rating-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--star);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+}
+
+.rating-slider::-moz-range-thumb {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--star);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+}
+
+.rating-ticks {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-muted);
+  padding: 0 2px;
 }
 
 /* ── Companion input ── */
@@ -442,6 +498,344 @@ body {
   padding: 0;
   line-height: 1;
   opacity: 0.6;
+}
+
+/* ── Bottom nav ── */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  background: var(--surface);
+  border-top: 1px solid var(--surface2);
+  display: flex;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  z-index: 50;
+}
+
+.nav-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  padding: 10px 0 12px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.15s;
+}
+
+.nav-btn.active {
+  color: var(--accent-light);
+}
+
+.nav-icon {
+  font-size: 22px;
+}
+
+/* ── Friends list ── */
+.friends-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.friend-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.15s;
+}
+
+.friend-card:active {
+  background: var(--surface2);
+}
+
+.friend-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+  flex-shrink: 0;
+}
+
+.friend-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.friend-name {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.friend-count {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.friend-chevron {
+  font-size: 22px;
+  color: var(--text-muted);
+  line-height: 1;
+}
+
+/* ── Add friend form ── */
+.add-friend-form {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.add-friend-form input {
+  background: var(--surface2);
+  border: none;
+  border-radius: 10px;
+  padding: 13px 14px;
+  color: var(--text);
+  font-size: 15px;
+  outline: none;
+  width: 100%;
+  font-family: inherit;
+}
+
+.add-friend-form input::placeholder {
+  color: var(--text-muted);
+}
+
+.add-friend-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-primary {
+  flex: 1;
+  background: var(--accent);
+  border: none;
+  color: white;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-primary:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  flex: 1;
+  background: var(--surface2);
+  border: none;
+  color: var(--text-muted);
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-danger {
+  flex: 1;
+  background: var(--danger);
+  border: none;
+  color: white;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ── Friend profile ── */
+.profile-header {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding-bottom: 20px;
+}
+
+.back-btn {
+  background: var(--surface);
+  border: none;
+  color: var(--text);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.profile-hero {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.friend-avatar-large {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 700;
+  color: white;
+  flex-shrink: 0;
+}
+
+.profile-name {
+  font-size: 26px;
+  font-weight: 800;
+  background: none;
+  -webkit-text-fill-color: var(--text);
+}
+
+/* ── Stats ── */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 14px 10px;
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent-light);
+}
+
+.stat-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 10px;
+}
+
+/* ── Danger zone ── */
+.danger-zone {
+  margin-top: 28px;
+  padding-bottom: 8px;
+}
+
+.delete-friend-btn {
+  background: transparent;
+  border: 1px solid var(--danger);
+  color: var(--danger);
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.confirm-delete {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.confirm-delete p {
+  font-size: 14px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* ── Friend chips in form ── */
+.friends-quick-select {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.friend-chip {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--surface2);
+  border: 1.5px solid transparent;
+  color: var(--text-muted);
+  padding: 6px 12px 6px 6px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.friend-chip.selected {
+  border-color: var(--chip-color, var(--accent));
+  color: var(--text);
+}
+
+.chip-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: white;
+  flex-shrink: 0;
 }
 
 /* ── Form row (two fields side by side) ── */

@@ -1,62 +1,76 @@
 import { useState } from 'react';
 import StarRating from './StarRating';
 
-function AddOutingModal({ onAdd, onClose }) {
-  const [name, setName] = useState('');
-  const [rating, setRating] = useState(0);
-  const [companions, setCompanions] = useState([]);
+function AddOutingModal({ onAdd, onClose, friends = [], outing = null }) {
+  const today = new Date().toISOString().split('T')[0];
+  const [name, setName] = useState(outing?.name ?? '');
+  const [rating, setRating] = useState(outing?.rating ?? 0);
+  const [companions, setCompanions] = useState(outing?.companions ?? []);
   const [companionInput, setCompanionInput] = useState('');
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
-  const [price, setPrice] = useState('');
-  const [timeStart, setTimeStart] = useState('');
-  const [timeEnd, setTimeEnd] = useState('');
+  const [dateStart, setDateStart] = useState(outing?.date ?? today);
+  const [timeStart, setTimeStart] = useState(outing?.timeStart ?? '');
+  const [dateEnd, setDateEnd] = useState(outing?.dateEnd ?? today);
+  const [timeEnd, setTimeEnd] = useState(outing?.timeEnd ?? '');
+  const [price, setPrice] = useState(outing?.price != null ? String(outing.price) : '');
+
+  const handleDateStartChange = (val) => {
+    setDateStart(val);
+    if (dateEnd < val) setDateEnd(val);
+  };
+
+  const toggleFriend = (name) => {
+    setCompanions(prev =>
+      prev.includes(name) ? prev.filter(c => c !== name) : [...prev, name]
+    );
+  };
 
   const addCompanion = () => {
     const trimmed = companionInput.trim();
     if (trimmed && !companions.includes(trimmed)) {
-      setCompanions([...companions, trimmed]);
+      setCompanions(prev => [...prev, trimmed]);
       setCompanionInput('');
     }
   };
 
   const handleCompanionKey = (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      addCompanion();
-    }
+    if (e.key === 'Enter') { e.preventDefault(); addCompanion(); }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!name.trim()) return;
-    onAdd({ name: name.trim(), rating, companions, date, price: price ? parseFloat(price) : null, timeStart, timeEnd });
+    onAdd({
+      ...(outing ? { id: outing.id } : {}),
+      name: name.trim(),
+      rating,
+      companions,
+      date: dateStart,
+      timeStart,
+      dateEnd,
+      timeEnd,
+      price: price ? parseFloat(price) : null,
+    });
   };
+
+  const extraCompanions = companions.filter(c => !friends.some(f => f.name === c));
 
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={e => e.stopPropagation()}>
         <div className="modal-header">
-          <h2>Nouvelle sortie</h2>
+          <h2>{outing ? 'Modifier la sortie' : 'Nouvelle sortie'}</h2>
           <button className="close-btn" onClick={onClose}>✕</button>
         </div>
         <form onSubmit={handleSubmit} className="outing-form">
+
           <div className="form-group">
             <label>Nom de la sortie *</label>
             <input
               type="text"
               value={name}
               onChange={e => setName(e.target.value)}
-              placeholder="Ex: Ciné avec les amis"
+              placeholder="Ex: Week-end à Lyon"
               autoFocus
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Date</label>
-            <input
-              type="date"
-              value={date}
-              onChange={e => setDate(e.target.value)}
             />
           </div>
 
@@ -66,20 +80,71 @@ function AddOutingModal({ onAdd, onClose }) {
           </div>
 
           <div className="form-group">
+            <label>Début</label>
+            <div className="form-row">
+              <input
+                type="date"
+                value={dateStart}
+                onChange={e => handleDateStartChange(e.target.value)}
+              />
+              <input
+                type="time"
+                value={timeStart}
+                onChange={e => setTimeStart(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label>Fin</label>
+            <div className="form-row">
+              <input
+                type="date"
+                value={dateEnd}
+                min={dateStart}
+                onChange={e => setDateEnd(e.target.value)}
+              />
+              <input
+                type="time"
+                value={timeEnd}
+                onChange={e => setTimeEnd(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="form-group">
             <label>Avec qui ?</label>
+            {friends.length > 0 && (
+              <div className="friends-quick-select">
+                {friends.map(f => (
+                  <button
+                    key={f.id}
+                    type="button"
+                    className={`friend-chip ${companions.includes(f.name) ? 'selected' : ''}`}
+                    onClick={() => toggleFriend(f.name)}
+                    style={{ '--chip-color': f.color }}
+                  >
+                    <span className="chip-avatar" style={{ background: f.color }}>
+                      {f.name[0].toUpperCase()}
+                    </span>
+                    {f.name}
+                  </button>
+                ))}
+              </div>
+            )}
             <div className="companion-input">
               <input
                 type="text"
                 value={companionInput}
                 onChange={e => setCompanionInput(e.target.value)}
                 onKeyDown={handleCompanionKey}
-                placeholder="Ajouter un ami..."
+                placeholder="Autre personne..."
               />
               <button type="button" onClick={addCompanion} className="add-companion-btn">+</button>
             </div>
-            {companions.length > 0 && (
+            {extraCompanions.length > 0 && (
               <div className="companions-tags">
-                {companions.map(c => (
+                {extraCompanions.map(c => (
                   <span key={c} className="tag">
                     {c}
                     <button type="button" onClick={() => setCompanions(companions.filter(x => x !== c))}>×</button>
@@ -101,27 +166,8 @@ function AddOutingModal({ onAdd, onClose }) {
             />
           </div>
 
-          <div className="form-row">
-            <div className="form-group">
-              <label>Heure de début</label>
-              <input
-                type="time"
-                value={timeStart}
-                onChange={e => setTimeStart(e.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label>Heure de fin</label>
-              <input
-                type="time"
-                value={timeEnd}
-                onChange={e => setTimeEnd(e.target.value)}
-              />
-            </div>
-          </div>
-
           <button type="submit" className="submit-btn" disabled={!name.trim()}>
-            Enregistrer
+            {outing ? 'Sauvegarder' : 'Enregistrer'}
           </button>
         </form>
       </div>

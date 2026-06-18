@@ -5,6 +5,7 @@ import OutingCard from './components/OutingCard';
 import FriendsPage from './components/FriendsPage';
 import FriendProfile from './components/FriendProfile';
 import CalendarPage from './components/CalendarPage';
+import StatsPage from './components/StatsPage';
 
 const FRIEND_COLORS = ['#7c6fff', '#ff6b6b', '#4ecdc4', '#ffd93d', '#6bcb77', '#4d96ff', '#ff922b', '#cc5de8'];
 
@@ -55,7 +56,7 @@ function App() {
     ? friends.find(f => f.id === view.id)
     : null;
 
-  const activeTab = view === 'calendrier' ? 'calendrier' : view === 'sorties' ? 'sorties' : 'amis';
+  const activeTab = view === 'calendrier' ? 'calendrier' : view === 'stats' ? 'stats' : view === 'sorties' ? 'sorties' : 'amis';
 
   return (
     <div className="app">
@@ -114,6 +115,11 @@ function App() {
         />
       )}
 
+      {/* ── Stats view ── */}
+      {view === 'stats' && (
+        <StatsPage outings={outings} friends={friends} />
+      )}
+
       {/* ── Calendrier view ── */}
       {view === 'calendrier' && (
         <CalendarPage
@@ -138,24 +144,19 @@ function App() {
 
       {/* ── Bottom nav ── */}
       <nav className="bottom-nav">
-        <button
-          className={`nav-btn ${activeTab === 'sorties' ? 'active' : ''}`}
-          onClick={() => setView('sorties')}
-        >
+        <button className={`nav-btn ${activeTab === 'sorties' ? 'active' : ''}`} onClick={() => setView('sorties')}>
           <span className="nav-icon">🗺️</span>
           <span>Sorties</span>
         </button>
-        <button
-          className={`nav-btn ${activeTab === 'calendrier' ? 'active' : ''}`}
-          onClick={() => setView('calendrier')}
-        >
+        <button className={`nav-btn ${activeTab === 'calendrier' ? 'active' : ''}`} onClick={() => setView('calendrier')}>
           <span className="nav-icon">📅</span>
           <span>Calendrier</span>
         </button>
-        <button
-          className={`nav-btn ${activeTab === 'amis' ? 'active' : ''}`}
-          onClick={() => setView('amis')}
-        >
+        <button className={`nav-btn ${activeTab === 'stats' ? 'active' : ''}`} onClick={() => setView('stats')}>
+          <span className="nav-icon">📊</span>
+          <span>Stats</span>
+        </button>
+        <button className={`nav-btn ${activeTab === 'amis' ? 'active' : ''}`} onClick={() => setView('amis')}>
           <span className="nav-icon">👥</span>
           <span>Amis</span>
         </button>

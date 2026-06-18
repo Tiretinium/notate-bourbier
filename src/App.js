@@ -4,6 +4,7 @@ import AddOutingModal from './components/AddOutingModal';
 import OutingCard from './components/OutingCard';
 import FriendsPage from './components/FriendsPage';
 import FriendProfile from './components/FriendProfile';
+import CalendarPage from './components/CalendarPage';
 
 const FRIEND_COLORS = ['#7c6fff', '#ff6b6b', '#4ecdc4', '#ffd93d', '#6bcb77', '#4d96ff', '#ff922b', '#cc5de8'];
 
@@ -54,7 +55,7 @@ function App() {
     ? friends.find(f => f.id === view.id)
     : null;
 
-  const activeTab = view === 'sorties' ? 'sorties' : 'amis';
+  const activeTab = view === 'calendrier' ? 'calendrier' : view === 'sorties' ? 'sorties' : 'amis';
 
   return (
     <div className="app">
@@ -113,6 +114,16 @@ function App() {
         />
       )}
 
+      {/* ── Calendrier view ── */}
+      {view === 'calendrier' && (
+        <CalendarPage
+          outings={outings}
+          friends={friends}
+          onDeleteOuting={deleteOuting}
+          onEditOuting={setEditingOuting}
+        />
+      )}
+
       {/* ── Friend profile view ── */}
       {selectedFriend && (
         <FriendProfile
@@ -133,6 +144,13 @@ function App() {
         >
           <span className="nav-icon">🗺️</span>
           <span>Sorties</span>
+        </button>
+        <button
+          className={`nav-btn ${activeTab === 'calendrier' ? 'active' : ''}`}
+          onClick={() => setView('calendrier')}
+        >
+          <span className="nav-icon">📅</span>
+          <span>Calendrier</span>
         </button>
         <button
           className={`nav-btn ${activeTab === 'amis' ? 'active' : ''}`}

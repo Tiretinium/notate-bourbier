@@ -1,3 +1,4 @@
+
 function StarRating({ value, onChange }) {
   return (
     <div className="rating-input">

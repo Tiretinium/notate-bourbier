@@ -6,6 +6,7 @@ import FriendsPage from './components/FriendsPage';
 import FriendProfile from './components/FriendProfile';
 import CalendarPage from './components/CalendarPage';
 import StatsPage from './components/StatsPage';
+import { CATEGORIES } from './constants';
 
 const FRIEND_COLORS = ['#7c6fff', '#ff6b6b', '#4ecdc4', '#ffd93d', '#6bcb77', '#4d96ff', '#ff922b', '#cc5de8'];
 
@@ -18,6 +19,7 @@ function App() {
   });
   const [showModal, setShowModal] = useState(false);
   const [editingOuting, setEditingOuting] = useState(null);
+  const [activeCategory, setActiveCategory] = useState('');
   const [filter, setFilter] = useState('');
   const [view, setView] = useState('sorties'); // 'sorties' | 'amis' | { type: 'friend', id }
 
@@ -48,9 +50,14 @@ function App() {
 
   const filtered = outings.filter(o => {
     const q = filter.toLowerCase();
-    return o.name.toLowerCase().includes(q) ||
-      o.companions.some(c => c.toLowerCase().includes(q));
+    const matchSearch = o.name.toLowerCase().includes(q) ||
+      o.companions.some(c => c.toLowerCase().includes(q)) ||
+      (o.location && o.location.toLowerCase().includes(q));
+    const matchCategory = !activeCategory || o.category === activeCategory;
+    return matchSearch && matchCategory;
   });
+
+  const usedCategories = CATEGORIES.filter(c => outings.some(o => o.category === c.id));
 
   const selectedFriend = view?.type === 'friend'
     ? friends.find(f => f.id === view.id)
@@ -78,6 +85,24 @@ function App() {
                 onChange={e => setFilter(e.target.value)}
               />
               {filter && <button className="clear-search" onClick={() => setFilter('')}>✕</button>}
+            </div>
+          )}
+
+          {usedCategories.length > 0 && (
+            <div className="category-filter">
+              <button
+                className={`cat-filter-chip ${!activeCategory ? 'active' : ''}`}
+                onClick={() => setActiveCategory('')}
+              >Tout</button>
+              {usedCategories.map(c => (
+                <button
+                  key={c.id}
+                  className={`cat-filter-chip ${activeCategory === c.id ? 'active' : ''}`}
+                  onClick={() => setActiveCategory(activeCategory === c.id ? '' : c.id)}
+                >
+                  {c.emoji} {c.label}
+                </button>
+              ))}
             </div>
           )}
 

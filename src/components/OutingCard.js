@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { CATEGORIES } from '../constants';
 
 function formatTime(t) {
   if (!t) return '';
@@ -30,6 +31,7 @@ function formatDateShort(dateStr) {
 
 function OutingCard({ outing, onDelete, onEdit }) {
   const [expanded, setExpanded] = useState(false);
+  const cat = outing.category ? CATEGORIES.find(c => c.id === outing.category) : null;
 
 
   const multiDay = outing.dateEnd && outing.dateEnd !== outing.date;
@@ -52,11 +54,10 @@ function OutingCard({ outing, onDelete, onEdit }) {
             {multiDay && ` → ${formatDate(outing.dateEnd)}`}
           </span>
         </div>
-        {outing.rating > 0 && (
-          <div className="card-rating">
-            ⭐ {outing.rating}/20
-          </div>
-        )}
+        <div className="card-right">
+          {cat && <span className="card-category">{cat.emoji} {cat.label}</span>}
+          {outing.rating > 0 && <span className="card-rating">⭐ {outing.rating}/20</span>}
+        </div>
       </div>
 
       <div className="card-meta">

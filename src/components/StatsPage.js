@@ -1,3 +1,5 @@
+import { CATEGORIES } from '../constants';
+
 function getLast6Months() {
   const now = new Date();
   return Array.from({ length: 6 }, (_, i) => {
@@ -150,6 +152,16 @@ function StatsPage({ outings, friends }) {
       .reduce((s, o) => s + (o.price || 0), 0)),
   }));
 
+  const categoryCount = {};
+  outings.forEach(o => {
+    if (o.category) categoryCount[o.category] = (categoryCount[o.category] || 0) + 1;
+  });
+  const topCategories = CATEGORIES
+    .filter(c => categoryCount[c.id])
+    .map(c => ({ name: `${c.emoji} ${c.label}`, count: categoryCount[c.id] }))
+    .sort((a, b) => b.count - a.count);
+  const maxCategory = topCategories[0]?.count || 1;
+
   const locationCount = {};
   outings.forEach(o => {
     if (o.location) locationCount[o.location] = (locationCount[o.location] || 0) + 1;
@@ -212,6 +224,17 @@ function StatsPage({ outings, friends }) {
             <p className="section-label">Dépenses par mois (€)</p>
             <div className="chart-card">
               <LineChart data={spendByMonth} gradientId="grad-depenses" />
+            </div>
+          </div>
+        )}
+
+        {topCategories.length > 0 && (
+          <div className="stats-section">
+            <p className="section-label">Par catégorie</p>
+            <div className="chart-card">
+              {topCategories.map(c => (
+                <HBar key={c.name} label={c.name} value={c.count} max={maxCategory} color="var(--accent)" />
+              ))}
             </div>
           </div>
         )}

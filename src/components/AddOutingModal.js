@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import StarRating from './StarRating';
+import { CATEGORIES } from '../constants';
 
 function AddOutingModal({ onAdd, onClose, friends = [], outing = null }) {
   const today = new Date().toISOString().split('T')[0];
@@ -13,6 +14,7 @@ function AddOutingModal({ onAdd, onClose, friends = [], outing = null }) {
   const [timeEnd, setTimeEnd] = useState(outing?.timeEnd ?? '');
   const [price, setPrice] = useState(outing?.price != null ? String(outing.price) : '');
   const [location, setLocation] = useState(outing?.location ?? '');
+  const [category, setCategory] = useState(outing?.category ?? '');
 
   const handleDateStartChange = (val) => {
     setDateStart(val);
@@ -51,6 +53,7 @@ function AddOutingModal({ onAdd, onClose, friends = [], outing = null }) {
       timeEnd,
       price: price ? parseFloat(price) : null,
       location: location.trim(),
+      category,
     });
   };
 
@@ -74,6 +77,23 @@ function AddOutingModal({ onAdd, onClose, friends = [], outing = null }) {
               placeholder="Ex: Week-end à Lyon"
               autoFocus
             />
+          </div>
+
+          <div className="form-group">
+            <label>Catégorie</label>
+            <div className="category-grid">
+              {CATEGORIES.map(c => (
+                <button
+                  key={c.id}
+                  type="button"
+                  className={`category-chip ${category === c.id ? 'selected' : ''}`}
+                  onClick={() => setCategory(category === c.id ? '' : c.id)}
+                >
+                  <span>{c.emoji}</span>
+                  <span>{c.label}</span>
+                </button>
+              ))}
+            </div>
           </div>
 
           <div className="form-group">

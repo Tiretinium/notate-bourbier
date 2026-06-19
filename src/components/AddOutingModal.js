@@ -12,6 +12,7 @@ function AddOutingModal({ onAdd, onClose, friends = [], outing = null }) {
   const [dateEnd, setDateEnd] = useState(outing?.dateEnd ?? today);
   const [timeEnd, setTimeEnd] = useState(outing?.timeEnd ?? '');
   const [price, setPrice] = useState(outing?.price != null ? String(outing.price) : '');
+  const [location, setLocation] = useState(outing?.location ?? '');
 
   const handleDateStartChange = (val) => {
     setDateStart(val);
@@ -49,6 +50,7 @@ function AddOutingModal({ onAdd, onClose, friends = [], outing = null }) {
       dateEnd,
       timeEnd,
       price: price ? parseFloat(price) : null,
+      location: location.trim(),
     });
   };
 
@@ -152,6 +154,16 @@ function AddOutingModal({ onAdd, onClose, friends = [], outing = null }) {
                 ))}
               </div>
             )}
+          </div>
+
+          <div className="form-group">
+            <label>Lieu</label>
+            <input
+              type="text"
+              value={location}
+              onChange={e => setLocation(e.target.value)}
+              placeholder="Ex: Paris, Café des Arts..."
+            />
           </div>
 
           <div className="form-group">

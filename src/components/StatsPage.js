@@ -150,6 +150,16 @@ function StatsPage({ outings, friends }) {
       .reduce((s, o) => s + (o.price || 0), 0)),
   }));
 
+  const locationCount = {};
+  outings.forEach(o => {
+    if (o.location) locationCount[o.location] = (locationCount[o.location] || 0) + 1;
+  });
+  const topLocations = Object.entries(locationCount)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+    .map(([name, count]) => ({ name, count }));
+  const maxLocation = topLocations[0]?.count || 1;
+
   const companionCount = {};
   outings.forEach(o => o.companions.forEach(c => {
     companionCount[c] = (companionCount[c] || 0) + 1;
@@ -202,6 +212,17 @@ function StatsPage({ outings, friends }) {
             <p className="section-label">Dépenses par mois (€)</p>
             <div className="chart-card">
               <LineChart data={spendByMonth} gradientId="grad-depenses" />
+            </div>
+          </div>
+        )}
+
+        {topLocations.length > 0 && (
+          <div className="stats-section">
+            <p className="section-label">Top lieux</p>
+            <div className="chart-card">
+              {topLocations.map(l => (
+                <HBar key={l.name} label={l.name} value={l.count} max={maxLocation} color="var(--accent)" />
+              ))}
             </div>
           </div>
         )}

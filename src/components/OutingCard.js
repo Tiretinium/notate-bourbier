@@ -60,6 +60,7 @@ function OutingCard({ outing, onDelete, onEdit }) {
       </div>
 
       <div className="card-meta">
+        {outing.location && <span className="card-info">📍 {outing.location}</span>}
         {outing.companions.length > 0 && (
           <span className="card-companions">👥 {outing.companions.join(', ')}</span>
         )}

@@ -56,7 +56,6 @@ function OutingCard({ outing, onDelete, onEdit }) {
         </div>
         <div className="card-right">
           {cat && <span className="card-category">{cat.emoji} {cat.label}</span>}
-          {outing.rating > 0 && <span className="card-rating">⭐ {outing.rating}/20</span>}
         </div>
       </div>
 

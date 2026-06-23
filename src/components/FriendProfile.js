@@ -25,11 +25,6 @@ function FriendProfile({ friend, outings, onBack, onDeleteFriend, onDeleteOuting
     return sum + (d > 0 ? d : 0);
   }, 0);
 
-  const ratedOutings = friendOutings.filter(o => o.rating > 0);
-  const avgRating = ratedOutings.length > 0
-    ? (ratedOutings.reduce((sum, o) => sum + o.rating, 0) / ratedOutings.length).toFixed(1)
-    : null;
-
   return (
     <>
       <header className="header profile-header">
@@ -56,12 +51,6 @@ function FriendProfile({ friend, outings, onBack, onDeleteFriend, onDeleteOuting
             <div className="stat-value">{totalSpent > 0 ? `${totalSpent.toFixed(0)}€` : '—'}</div>
             <div className="stat-label">dépensé</div>
           </div>
-          {avgRating && (
-            <div className="stat-card">
-              <div className="stat-value">⭐ {avgRating}/20</div>
-              <div className="stat-label">moy.</div>
-            </div>
-          )}
         </div>
 
         {friendOutings.length === 0 ? (

@@ -1,11 +1,9 @@
 import { useState } from 'react';
-import StarRating from './StarRating';
 import { CATEGORIES } from '../constants';
 
 function AddOutingModal({ onAdd, onClose, friends = [], outing = null }) {
   const today = new Date().toISOString().split('T')[0];
   const [name, setName] = useState(outing?.name ?? '');
-  const [rating, setRating] = useState(outing?.rating ?? 0);
   const [companions, setCompanions] = useState(outing?.companions ?? []);
   const [companionInput, setCompanionInput] = useState('');
   const [dateStart, setDateStart] = useState(outing?.date ?? today);
@@ -45,7 +43,6 @@ function AddOutingModal({ onAdd, onClose, friends = [], outing = null }) {
     onAdd({
       ...(outing ? { id: outing.id } : {}),
       name: name.trim(),
-      rating,
       companions,
       date: dateStart,
       timeStart,
@@ -94,11 +91,6 @@ function AddOutingModal({ onAdd, onClose, friends = [], outing = null }) {
                 </button>
               ))}
             </div>
-          </div>
-
-          <div className="form-group">
-            <label>Note</label>
-            <StarRating value={rating} onChange={setRating} />
           </div>
 
           <div className="form-group">

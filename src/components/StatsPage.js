@@ -133,10 +133,6 @@ function StatsPage({ outings, friends }) {
 
   const totalSpent = outings.reduce((s, o) => s + (o.price || 0), 0);
   const totalMins = calcTotalMins(outings);
-  const ratedOutings = outings.filter(o => o.rating > 0);
-  const avgRating = ratedOutings.length > 0
-    ? (ratedOutings.reduce((s, o) => s + o.rating, 0) / ratedOutings.length).toFixed(1)
-    : '—';
 
   const months = getLast6Months();
 
@@ -185,7 +181,6 @@ function StatsPage({ outings, friends }) {
     }));
   const maxCompanion = topCompanions[0]?.count || 1;
 
-  const bestOuting = [...ratedOutings].sort((a, b) => b.rating - a.rating)[0];
   const priciest = [...outings].filter(o => o.price).sort((a, b) => b.price - a.price)[0];
   const longest = [...outings]
     .map(o => {
@@ -209,7 +204,6 @@ function StatsPage({ outings, friends }) {
           <StatCard value={outings.length} label="sorties" />
           <StatCard value={formatTotalTime(totalMins)} label="ensemble" />
           <StatCard value={totalSpent > 0 ? `${totalSpent.toFixed(0)}€` : '—'} label="dépensé" />
-          <StatCard value={avgRating !== '—' ? `${avgRating}/20` : '—'} label="moy." />
         </div>
 
         <div className="stats-section">
@@ -264,16 +258,6 @@ function StatsPage({ outings, friends }) {
         <div className="stats-section">
           <p className="section-label">À la une</p>
           <div className="highlights">
-            {bestOuting && (
-              <div className="highlight-card">
-                <span className="highlight-icon">⭐</span>
-                <div>
-                  <div className="highlight-title">Meilleure sortie</div>
-                  <div className="highlight-name">{bestOuting.name}</div>
-                  <div className="highlight-detail">{bestOuting.rating}/20</div>
-                </div>
-              </div>
-            )}
             {priciest && (
               <div className="highlight-card">
                 <span className="highlight-icon">💸</span>

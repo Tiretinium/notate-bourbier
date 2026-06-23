@@ -1,70 +1,79 @@
-# Getting Started with Create React App
+# 🗺️ Notate Bourbier
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Application mobile pour garder une trace de vos sorties et activités avec vos amis.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Fonctionnalités
 
-### `npm start`
+### Sorties
+- Ajouter, modifier et supprimer des sorties
+- Renseigner le **nom**, la **catégorie**, le **lieu**, les **dates et horaires**, les **participants** et le **prix dépensé**
+- Calcul automatique de la durée
+- Recherche par nom de sortie, ami ou lieu
+- Filtre par catégorie
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+**Catégories disponibles :** 🎬 Ciné · 🍕 Resto · ✈️ Voyage · 🎉 Soirée · ⚽ Sport · 🎵 Concert · 🎨 Culture · ☕ Café · 🛍️ Shopping · 🎮 Gaming
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Amis
+- Gérer une liste d'amis avec une couleur personnalisée
+- Consulter le **profil de chaque ami** : nombre de sorties ensemble, temps passé ensemble, argent dépensé
+- Voir toutes les sorties partagées avec un ami
 
-### `npm test`
+### Calendrier
+- Vue mensuelle avec navigation mois par mois
+- Aperçu des sorties jour par jour
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Stats
+- Courbes d'évolution des sorties et des dépenses sur 6 mois
+- Classement des catégories, lieux et amis les plus fréquents
+- Highlights : sortie la plus chère, sortie la plus longue
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Stack technique
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+| Technologie | Usage |
+|---|---|
+| [React 19](https://react.dev) | Interface utilisateur |
+| localStorage | Persistance des données (aucun serveur requis) |
+| CSS pur | Styles, design mobile-first |
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## Lancer le projet
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+npm install
+npm start
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+L'application s'ouvre sur [http://localhost:3000](http://localhost:3000).
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+npm run build   # build de production
+npm test        # tests
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
 
-## Learn More
+## Structure
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+src/
+├── App.js                  # Racine, gestion des vues et du state global
+├── constants.js            # Liste des catégories
+└── components/
+    ├── AddOutingModal.js   # Formulaire ajout / modification de sortie
+    ├── OutingCard.js       # Carte d'une sortie
+    ├── FriendsPage.js      # Liste des amis
+    ├── FriendProfile.js    # Profil d'un ami
+    ├── CalendarPage.js     # Vue calendrier
+    └── StatsPage.js        # Statistiques et graphiques
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## Données
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Tout est stocké dans le `localStorage` du navigateur — pas de compte, pas de serveur, pas de connexion internet requise. Les données restent sur l'appareil.
